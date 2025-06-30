@@ -80,7 +80,7 @@ export default function Home() {
           </div>
 
           {/* Scroll Indicator */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 -translate-x-4">
             <div className="w-8 h-8 border-2 border-neutral-600 flex items-center justify-center animate-bounce">
               <svg
                 className="w-4 h-4 text-neutral-600"
@@ -164,7 +164,7 @@ export default function Home() {
               </div>
               <div className="flex items-center space-x-4">
                 <div className="w-16 h-16 bg-red-500/20 border border-red-500/30 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-red-400 font-bold text-xl">1</span>
+                  <span className="text-red-400 font-bold text-lg">1/1</span>
                 </div>
                 <div>
                   <p className="font-semibold text-black text-lg">
@@ -349,7 +349,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="w-16 h-16 bg-red-500/20 border border-red-500/30 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <span className="text-red-400 font-bold text-lg">20</span>
+                <span className="text-red-400 text-2xl">🗳️</span>
               </div>
               <h4 className="font-semibold text-black text-lg mb-2">
                 ERC-20Votes
