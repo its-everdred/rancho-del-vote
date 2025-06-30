@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Rancho Del Vote
+
+**Ranked-Choice Delegated Voting for Ethereum DAOs**
+
+A new governance standard that combines ranked-choice voting with cascading delegation to unlock greater participation and reduce uncast votes in DAO governance.
+
+## The Problem
+
+DAO governance today is rigid and ineffective:
+
+- **Low Participation**: Only ~2.7% of OP tokens are delegated in Optimism DAO ([source](https://gov.optimism.io/t/the-weight-of-influence-an-analysis-of-the-power-in-the-collective/9966))
+- **Inactive Delegates**: Delegates miss ~33% of proposals ([Oct 2024 Gov Report](https://gov.optimism.io/t/governance-report-october-2024-update/9218))
+- **Binary Delegation**: Current systems only allow delegation to a single address, creating single points of failure
+- **Uncast Votes**: When delegates are inactive, voting power goes unused instead of flowing to backup representatives
+
+## The Solution: Ranked-Choice Delegation
+
+Rancho Del Vote introduces a new voting mechanism where:
+
+1. **Ranked Delegate Lists**: Token holders define a ranked list of trusted delegates (e.g., [Alice, Bob, Carol])
+2. **Cascading Fallback**: If a token holder doesn't vote directly, their voting power cascades through their ranked list
+3. **First-Active Wins**: The first delegate in the list who voted on that specific proposal receives the voting power
+4. **Graceful Abstention**: If no delegates in the list voted, the vote is marked as abstained
+
+## How It Works
+
+```
+Token Holder → [Delegate 1, Delegate 2, Delegate 3, ...]
+                    ↓
+              Did I vote directly? → YES: Use my vote
+                    ↓ NO
+              Did Delegate 1 vote? → YES: Use their vote
+                    ↓ NO  
+              Did Delegate 2 vote? → YES: Use their vote
+                    ↓ NO
+              Did Delegate 3 vote? → YES: Use their vote
+                    ↓ NO
+                 ABSTAIN
+```
+
+## Key Features
+
+- **ERC-20Votes Compatible**: Built on OpenZeppelin's proven governance standards
+- **Governor Integration**: Works with existing Governor contracts and proposal systems
+- **Modular Architecture**: Lightweight, extensible design for developer adoption
+- **Optimism Focused**: Designed with Optimism DAO's needs and aesthetic in mind
+- **Future-Ready**: Prepared for ERC-1202 and Snapshot integration
+
+## Technical Architecture
+
+The system preserves compatibility with current delegation and voting interfaces while adding ranked-choice functionality:
+
+- **Smart Contracts**: Foundry-based contracts extending OpenZeppelin Governor
+- **Off-Chain Indexing**: Efficient tracking of delegation rankings and vote cascading
+- **Web Interface**: Next.js frontend for delegate management and voting
+- **Standard Compliance**: Maintains ERC-20Votes and Governor compatibility
+
+## Project Status
+
+🚧 **In Development** - This is a demonstration of the proposed standard. Implementation includes:
+
+- [x] Project foundation and documentation
+- [ ] Smart contract implementation
+- [ ] EIP specification draft
+- [ ] Off-chain voting mechanism
+- [ ] Web interface for delegate management
+- [ ] Integration testing with Governor contracts
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) to explore the governance tool.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Contributing
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+This project demonstrates a novel approach to DAO governance. Contributions welcome as we develop this standard for broader Ethereum ecosystem adoption.
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT
