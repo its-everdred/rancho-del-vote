@@ -1,3 +1,5 @@
+import VotingPlayground from '../components/VotingPlayground';
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-neutral-900 text-white">
@@ -24,7 +26,7 @@ export default function Home() {
                   Documentation
                 </a>
                 <a
-                  href="#"
+                  href="/eip"
                   className="text-neutral-400 hover:text-white transition-colors"
                 >
                   EIP Draft
@@ -71,12 +73,18 @@ export default function Home() {
           </div>
 
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6 mb-16">
-            <button className="bg-red-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-red-600 transition-colors text-lg">
+            <a 
+              href="#demo"
+              className="bg-red-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-red-600 transition-colors text-lg"
+            >
               Try Demo
-            </button>
-            <button className="border border-neutral-700 text-neutral-300 px-8 py-4 rounded-lg font-semibold hover:bg-neutral-800 hover:text-white transition-colors text-lg">
+            </a>
+            <a 
+              href="/eip"
+              className="border border-neutral-700 text-neutral-300 px-8 py-4 rounded-lg font-semibold hover:bg-neutral-800 hover:text-white transition-colors text-lg"
+            >
               Read EIP Draft
-            </button>
+            </a>
           </div>
 
           {/* Scroll Indicator */}
@@ -333,63 +341,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Technical Features */}
-      <section className="py-20 bg-white relative overflow-hidden">
+      {/* Interactive Demo */}
+      <section id="demo" className="py-20 bg-white relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-black mb-6">
-              Built on Proven Standards
+              Try It Yourself
             </h2>
             <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-              Compatible with existing DAO infrastructure while introducing
-              innovative delegation mechanics
+              Experience ranked delegation in action with this interactive voting playground
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-red-500/20 border border-red-500/30 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <span className="text-red-400 text-2xl">🗳️</span>
-              </div>
-              <h4 className="font-semibold text-black text-lg mb-2">
-                ERC-20Votes
-              </h4>
-              <p className="text-sm text-gray-600">
-                Compatible with existing token standards
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-red-500/20 border border-red-500/30 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <span className="text-red-400 font-bold text-lg">⚖️</span>
-              </div>
-              <h4 className="font-semibold text-black text-lg mb-2">
-                Governor
-              </h4>
-              <p className="text-sm text-gray-600">
-                Extends OpenZeppelin&apos;s battle-tested contracts
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-red-500/20 border border-red-500/30 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <span className="text-red-400 font-bold text-lg">🔗</span>
-              </div>
-              <h4 className="font-semibold text-black text-lg mb-2">Modular</h4>
-              <p className="text-sm text-gray-600">
-                Lightweight architecture for easy adoption
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 bg-red-500/20 border border-red-500/30 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <span className="text-red-400 font-bold text-lg">🔮</span>
-              </div>
-              <h4 className="font-semibold text-black text-lg mb-2">
-                Future-Ready
-              </h4>
-              <p className="text-sm text-gray-600">
-                Prepared for ERC-1202 and Snapshot integration
-              </p>
-            </div>
-          </div>
+          <VotingPlayground />
         </div>
       </section>
 
