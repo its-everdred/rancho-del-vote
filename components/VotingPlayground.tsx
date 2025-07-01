@@ -18,7 +18,7 @@ const delegates: Delegate[] = [
     name: "Alice",
     votingPower: 1500,
     preference: "Chocolate all the way",
-    archetype: "The Whale",
+    archetype: "The Protocol Politician",
     vote: "chocolate",
   },
   {
@@ -26,7 +26,7 @@ const delegates: Delegate[] = [
     name: "Bob",
     votingPower: 850,
     preference: "I prefer strawberry, but I'm chill",
-    archetype: "The Protocol Politician",
+    archetype: "The Whale",
     vote: "strawberry",
   },
   {
@@ -74,6 +74,9 @@ export default function VotingPlayground() {
     fallbackUsed: boolean;
     abstainedDelegates: { name: string; reason: string }[];
     workingDelegates: Delegate[];
+    smartDelegation: boolean;
+    originalPreference: string | null;
+    firstTwoHavePreferences: boolean;
   } | null>(null);
   const [hoveredDelegate, setHoveredDelegate] = useState<string | null>(null);
 
@@ -86,17 +89,46 @@ export default function VotingPlayground() {
   };
 
   const castVote = () => {
-    if (selectedDelegates.length === 0) return;
+    if (selectedDelegates.length !== 3) return;
 
     const abstainedDelegates: { name: string; reason: string }[] = [];
     const workingDelegates = [...delegates];
 
-    // For delegates with no signaled preference, assign random votes
+    // Check if user selected a smart delegation pattern (1 preference + 2 non-preference)
+    const selectedDelegateObjects = selectedDelegates.map(
+      (id) => delegates.find((d) => d.id === id)!
+    );
+    const preferenceCount = selectedDelegateObjects.filter(
+      (d) => d.vote !== null
+    ).length;
+    const nonPreferenceCount = selectedDelegateObjects.filter(
+      (d) => d.vote === null
+    ).length;
+
+    // Check if first 2 choices have specific preferences
+    const firstTwoHavePreferences = selectedDelegateObjects
+      .slice(0, 2)
+      .every((d) => d.vote !== null);
+
+    let topDelegateVote = null;
+    if (preferenceCount === 1 && nonPreferenceCount === 2) {
+      // User selected optimal pattern - get the preference from the top delegate
+      const topDelegate = selectedDelegateObjects[0];
+      topDelegateVote = topDelegate.vote;
+    }
+
+    // For delegates with no signaled preference, assign votes strategically
     workingDelegates.forEach((delegate) => {
       if (delegate.vote === null && selectedDelegates.includes(delegate.id)) {
-        const randomVotes = ["vanilla", "chocolate", "strawberry"] as const;
-        delegate.vote =
-          randomVotes[Math.floor(Math.random() * randomVotes.length)];
+        if (topDelegateVote) {
+          // Use the top delegate's preference for smart delegation
+          delegate.vote = topDelegateVote;
+        } else {
+          // Fallback to random for other patterns
+          const randomVotes = ["vanilla", "chocolate", "strawberry"] as const;
+          delegate.vote =
+            randomVotes[Math.floor(Math.random() * randomVotes.length)];
+        }
       }
     });
 
@@ -131,6 +163,9 @@ export default function VotingPlayground() {
       fallbackUsed,
       abstainedDelegates,
       workingDelegates,
+      smartDelegation: preferenceCount === 1 && nonPreferenceCount === 2,
+      originalPreference: topDelegateVote || null,
+      firstTwoHavePreferences,
     });
     setHasVoted(true);
     setShowCascade(true);
@@ -207,10 +242,13 @@ export default function VotingPlayground() {
           {/* Instructions */}
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
             <p className="text-sm text-blue-800">
-              <strong>Instructions:</strong> You have{" "}
-              <strong>500 voting tokens</strong>. Select up to 3 delegates in
-              order of preference (1st choice = highest priority). Your vote
-              will cascade to the first delegate who actually voted.
+              <strong>Instructions:</strong>&nbsp; Select exactly 3 delegates in
+              order of preference. Your vote will cascade to the first delegate
+              who actually voted.
+            </p>
+            <p className="text-xs text-blue-700 mt-2 italic">
+              💡 Tip: It&apos;s often better to delegate to an undecided
+              delegate than one whose preference you strongly dislike.
             </p>
           </div>
 
@@ -249,9 +287,6 @@ export default function VotingPlayground() {
                         <h5 className="font-semibold text-black text-sm">
                           {delegate.name}
                         </h5>
-                        <p className="text-xs text-gray-600">
-                          {delegate.votingPower} tokens
-                        </p>
                         <p className="text-xs text-gray-500 italic">
                           {delegate.archetype}
                         </p>
@@ -297,9 +332,6 @@ export default function VotingPlayground() {
                           <div className="opacity-80">
                             &ldquo;{delegate.preference}&rdquo;
                           </div>
-                          <div className="text-gray-300">
-                            {delegate.votingPower} delegated tokens
-                          </div>
                           <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-black"></div>
                         </div>
                       </div>
@@ -314,16 +346,22 @@ export default function VotingPlayground() {
           <div className="text-center">
             <button
               onClick={castVote}
-              disabled={selectedDelegates.length === 0}
+              disabled={selectedDelegates.length !== 3}
               className={`px-8 py-4 rounded-lg font-semibold text-lg transition-colors ${
-                selectedDelegates.length === 0
+                selectedDelegates.length !== 3
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : "bg-red-500 text-white hover:bg-red-600"
               }`}
             >
               Cast Vote via Delegation
             </button>
-            {selectedDelegates.length > 0 && (
+            {selectedDelegates.length > 0 && selectedDelegates.length < 3 && (
+              <p className="text-sm text-gray-600 mt-2">
+                Select {3 - selectedDelegates.length} more delegate
+                {3 - selectedDelegates.length !== 1 ? "s" : ""} to continue
+              </p>
+            )}
+            {selectedDelegates.length === 3 && (
               <p className="text-sm text-gray-600 mt-2">
                 Your vote will go to:{" "}
                 {selectedDelegates
@@ -400,9 +438,6 @@ export default function VotingPlayground() {
                         <h5 className="font-semibold text-black">
                           {delegate?.name}
                         </h5>
-                        <p className="text-sm text-gray-600">
-                          {delegate?.votingPower} tokens
-                        </p>
                       </div>
                     </div>
 
@@ -485,14 +520,30 @@ export default function VotingPlayground() {
               {cascadeStep >= 4 && finalResult?.vote && (
                 <div className="bg-green-50 border border-green-200 rounded-lg p-4 mt-4">
                   <h5 className="text-xl font-bold text-green-800 mb-3">
-                    🎉 Success! Your Vote Still Counted!
+                    {finalResult.smartDelegation
+                      ? "🎯 Smart Delegation Success!"
+                      : "🎉 Success! Your Vote Still Counted!"}
                   </h5>
                   <div className="space-y-2">
-                    <p className="text-green-700 font-medium">
-                      Your top delegate abstained, but your voting power was
-                      automatically delegated to your second choice. Your vote
-                      still counted!
-                    </p>
+                    {finalResult.smartDelegation ? (
+                      <p className="text-green-700 font-medium">
+                        Even though your top choice missed the vote, your
+                        preference was preserved because you delegated to
+                        multiple delegates.
+                      </p>
+                    ) : finalResult.firstTwoHavePreferences ? (
+                      <p className="text-green-700 font-medium">
+                        Even though your top choice was absent, your vote still
+                        counted because it cascaded to your second choice who
+                        had a clear preference.
+                      </p>
+                    ) : (
+                      <p className="text-green-700 font-medium">
+                        Your top delegate abstained, but your voting power was
+                        automatically delegated to your second choice. Your vote
+                        still counted!
+                      </p>
+                    )}
                     <div className="bg-white/60 rounded-lg p-3 border border-green-300">
                       <p className="text-green-800">
                         <strong>Final Result:</strong> Your 500 tokens voted for{" "}
@@ -508,10 +559,23 @@ export default function VotingPlayground() {
                         2nd choice)
                       </p>
                     </div>
-                    <p className="text-green-600 text-sm italic">
-                      With traditional delegation, your vote would have been
-                      lost when your delegate didn&apos;t participate!
-                    </p>
+                    {finalResult.smartDelegation ? (
+                      <p className="text-green-600 text-sm italic">
+                        This is the power of ranked delegation: your preference
+                        was retained even when your top choice was unavailable!
+                      </p>
+                    ) : finalResult.firstTwoHavePreferences ? (
+                      <p className="text-green-600 text-sm italic">
+                        Ranked delegation ensures your vote always counts by
+                        automatically falling back to your next preferred
+                        delegate!
+                      </p>
+                    ) : (
+                      <p className="text-green-600 text-sm italic">
+                        With traditional delegation, your vote would have been
+                        lost when your delegate didn&apos;t participate!
+                      </p>
+                    )}
                   </div>
                 </div>
               )}
