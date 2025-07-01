@@ -50,7 +50,7 @@ const delegates: Delegate[] = [
     name: "Erin",
     votingPower: 950,
     preference:
-      "All flavors have their merits, I'll decide when I see the options",
+      "All flavors have their merits, I'll decide when I cast my vote",
     archetype: "The Degen",
     vote: null,
   },
