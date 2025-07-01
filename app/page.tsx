@@ -20,7 +20,7 @@ export default function Home() {
               alt="Rancho Del Vote Logo Background"
               width={1200}
               height={1200}
-              className="object-contain"
+              className="object-contain blur-[3px]"
             />
           </div>
         </div>
@@ -174,44 +174,6 @@ export default function Home() {
                   </p>
                 </div>
               </div>
-            </div>
-          </div>
-
-          {/* Problem Bubbles */}
-          <div className="grid md:grid-cols-3 gap-6">
-            <div className="bg-gray-100 border border-gray-200 rounded-xl p-6 hover:bg-gray-200 transition-colors">
-              <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4">
-                <span className="text-red-400 text-xl">📊</span>
-              </div>
-              <h4 className="font-semibold text-black mb-3">
-                Low Participation
-              </h4>
-              <p className="text-sm text-gray-600">
-                Most tokens remain undelegated and unused in governance
-                decisions
-              </p>
-            </div>
-            <div className="bg-gray-100 border border-gray-200 rounded-xl p-6 hover:bg-gray-200 transition-colors">
-              <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4">
-                <span className="text-red-400 text-xl">😴</span>
-              </div>
-              <h4 className="font-semibold text-black mb-3">
-                Inactive Delegates
-              </h4>
-              <p className="text-sm text-gray-600">
-                Chosen representatives often miss votes or participate
-                irregularly
-              </p>
-            </div>
-            <div className="bg-gray-100 border border-gray-200 rounded-xl p-6 hover:bg-gray-200 transition-colors">
-              <div className="w-12 h-12 bg-red-500/20 rounded-lg flex items-center justify-center mb-4">
-                <span className="text-red-400 text-xl">🗳️</span>
-              </div>
-              <h4 className="font-semibold text-black mb-3">Uncast Votes</h4>
-              <p className="text-sm text-gray-600">
-                Voting power goes unused when delegates abstain or forget to
-                participate
-              </p>
             </div>
           </div>
         </div>
