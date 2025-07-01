@@ -1,85 +1,58 @@
-import VotingPlayground from '../components/VotingPlayground';
+import VotingPlayground from "../components/VotingPlayground";
+import Navigation from "../components/Navigation";
+import Image from "next/image";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-neutral-900 text-white">
-      {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 border-b border-neutral-800 bg-neutral-900/80 backdrop-blur-sm">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-red-500 rounded-md flex items-center justify-center">
-                <span className="text-white font-bold text-sm">R</span>
-              </div>
-              <div>
-                <h1 className="text-lg font-semibold text-white">
-                  Rancho Del Vote
-                </h1>
-              </div>
-            </div>
-            <div className="flex items-center space-x-6">
-              <nav className="hidden md:flex items-center space-x-6 text-sm">
-                <a
-                  href="#"
-                  className="text-neutral-400 hover:text-white transition-colors"
-                >
-                  Documentation
-                </a>
-                <a
-                  href="/eip"
-                  className="text-neutral-400 hover:text-white transition-colors"
-                >
-                  EIP Draft
-                </a>
-                <a
-                  href="https://github.com/its-everdred/rancho-del-vote"
-                  className="text-neutral-400 hover:text-white transition-colors"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  GitHub
-                </a>
-              </nav>
-              <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors text-sm font-medium">
-                Connect Wallet
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+      <Navigation isDark={true} />
 
       {/* Full-Screen Hero Section */}
       <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
         {/* Static Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900"></div>
 
-
         <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
           <div className="mb-8">
-            <span className="inline-block px-3 py-1 bg-red-500/10 border border-red-500/20 rounded-full text-red-400 text-sm font-medium mb-6">
+            <span className="inline-block px-3 py-1 bg-red-500/10 border border-red-500/20 rounded-full text-red-400 text-sm font-medium mb-8">
               New Governance Standard
             </span>
-            <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight">
-              Fix DAO Governance with{" "}
+            <div className="flex justify-center mb-8">
+              <div className="w-24 h-24 md:w-32 md:h-32 relative">
+                <Image
+                  src="/logo-128.png"
+                  alt="Rancho Del Vote Logo"
+                  width={128}
+                  height={128}
+                  className="object-contain drop-shadow-2xl"
+                />
+              </div>
+            </div>
+            <h2 className="text-5xl md:text-5xl font-semibold mb-6 text-neutral-300">
+              Fix DAO Governance with
+            </h2>
+            <h1 className="text-7xl md:text-8xl font-bold mb-6 leading-tight">
               <span className="text-red-500">
-                Ranked Choice Delegated Voting
+                Ranked Choice
+                <br />
+                Delegated Voting
               </span>
             </h1>
             <p className="text-xl md:text-2xl text-neutral-300 max-w-4xl mx-auto leading-relaxed mb-12">
               A new voting standard that combines ranked-choice voting with
               cascading delegation to unlock greater participation and reduce
-              uncast votes in DAO governance.
+              uncast votes.
             </p>
           </div>
 
           <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6 mb-16">
-            <a 
+            <a
               href="#demo"
               className="bg-red-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-red-600 transition-colors text-lg"
             >
               Try Demo
             </a>
-            <a 
+            <a
               href="/eip"
               className="border border-neutral-700 text-neutral-300 px-8 py-4 rounded-lg font-semibold hover:bg-neutral-800 hover:text-white transition-colors text-lg"
             >
@@ -242,45 +215,8 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Features */}
-          <div className="grid md:grid-cols-3 gap-8 mb-12">
-            <div className="text-center">
-              <div className="w-20 h-20 bg-red-500/20 border border-red-500/30 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-red-400 text-3xl">📋</span>
-              </div>
-              <h4 className="font-semibold text-white text-lg mb-3">
-                Ranked Lists
-              </h4>
-              <p className="text-neutral-400">
-                Define multiple trusted delegates in order of preference
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-20 h-20 bg-red-500/20 border border-red-500/30 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-red-400 text-3xl">⬇️</span>
-              </div>
-              <h4 className="font-semibold text-white text-lg mb-3">
-                Cascading Fallback
-              </h4>
-              <p className="text-neutral-400">
-                Voting power flows down the list to active participants
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-20 h-20 bg-red-500/20 border border-red-500/30 rounded-full flex items-center justify-center mx-auto mb-6">
-                <span className="text-red-400 text-3xl">✅</span>
-              </div>
-              <h4 className="font-semibold text-white text-lg mb-3">
-                Higher Participation
-              </h4>
-              <p className="text-neutral-400">
-                Reduces uncast votes and inactive delegation
-              </p>
-            </div>
-          </div>
-
           {/* Flow Diagram */}
-          <div className="bg-neutral-800/30 border border-neutral-700 rounded-2xl p-8">
+          <div className="bg-neutral-800/30 border border-neutral-700 rounded-2xl p-8 mb-12">
             <h3 className="text-2xl font-bold text-white mb-8 text-center">
               How It Works
             </h3>
@@ -338,6 +274,43 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          {/* Features */}
+          <div className="grid md:grid-cols-3 gap-8">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-white text-3xl">📋</span>
+              </div>
+              <h4 className="font-semibold text-white text-lg mb-3">
+                Ranked Lists
+              </h4>
+              <p className="text-neutral-400">
+                Define multiple delegation lists, use them between tokens.
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-white text-3xl">⬇️</span>
+              </div>
+              <h4 className="font-semibold text-white text-lg mb-3">
+                Cascading Fallback
+              </h4>
+              <p className="text-neutral-400">
+                Voting power flows down the list to active participants
+              </p>
+            </div>
+            <div className="text-center">
+              <div className="w-20 h-20 bg-red-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                <span className="text-white text-3xl">✅</span>
+              </div>
+              <h4 className="font-semibold text-white text-lg mb-3">
+                Higher Participation
+              </h4>
+              <p className="text-neutral-400">
+                Reduces uncast votes and inactive delegation
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -349,7 +322,8 @@ export default function Home() {
               Try It Yourself
             </h2>
             <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-              Experience ranked delegation in action with this interactive voting playground
+              Experience ranked delegation in action with this interactive
+              voting playground
             </p>
           </div>
 
@@ -362,8 +336,14 @@ export default function Home() {
         <div className="max-w-6xl mx-auto px-6">
           <div className="flex flex-col md:flex-row items-center justify-between mb-8">
             <div className="flex items-center space-x-3 mb-4 md:mb-0">
-              <div className="w-8 h-8 bg-red-500 rounded-md flex items-center justify-center">
-                <span className="text-white font-bold text-sm">R</span>
+              <div className="w-8 h-8 relative">
+                <Image
+                  src="/logo-32.png"
+                  alt="Rancho Del Vote Logo"
+                  width={32}
+                  height={32}
+                  className="object-contain"
+                />
               </div>
               <span className="text-neutral-400 font-medium">
                 Rancho Del Vote

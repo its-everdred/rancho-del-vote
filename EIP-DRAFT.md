@@ -1,7 +1,7 @@
 ---
 EIP: TBD
 Title: Ranked Delegated Voting Standard
-Author: [Your Name] <[your-email@example.com]>
+Author: [everdred] <[its-everdred@gmail.com]>
 Discussions-To: https://gov.optimism.io/t/the-weight-of-influence-an-analysis-of-the-power-in-the-collective/9966
 Status: Draft
 Type: Standards Track
@@ -53,19 +53,19 @@ Integrates with `Governor`-style voting:
 
 This logic can be implemented in:
 
-* An off-chain vote counter (e.g. Snapshot strategy)
-* On-chain `Governor` contract via a proposal finalization function
+- An off-chain vote counter (e.g. Snapshot strategy)
+- On-chain `Governor` contract via a proposal finalization function
 
 #### Snapshot Compatibility
 
-* At the snapshot block (set by proposal), determine the effective vote
-* Voter's delegate list must be fixed before the proposal snapshot
+- At the snapshot block (set by proposal), determine the effective vote
+- Voter's delegate list must be fixed before the proposal snapshot
 
 ## Rationale
 
-* **Gas efficiency**: Storage is limited to an array of addresses per user
-* **Override friendly**: Direct voting overrides delegate votes
-* **Simplicity**: Easy to explain; behaves like email forwarding with a fallback
+- **Gas efficiency**: Storage is limited to an array of addresses per user
+- **Override friendly**: Direct voting overrides delegate votes
+- **Simplicity**: Easy to explain; behaves like email forwarding with a fallback
 
 ## Backward Compatibility
 
@@ -73,13 +73,13 @@ The standard builds on `ERC20Votes` and `ERC5805` (for snapshotting). No changes
 
 ## Reference Implementation
 
-* [https://github.com/rancho-del-vote/contracts](https://github.com/rancho-del-vote/contracts)
-* ENS Default Delegate Proposal (discussion): [https://discuss.ens.domains/t/](https://discuss.ens.domains/t/)...
+- [https://github.com/rancho-del-vote/contracts](https://github.com/rancho-del-vote/contracts)
+- ENS Default Delegate Proposal (discussion): [https://discuss.ens.domains/t/](https://discuss.ens.domains/t/)...
 
 ## Security Considerations
 
-* **Cyclic delegation** must be disallowed or safely short-circuited
-* **Griefing**: Delegates could abstain intentionally; recommend transparency tooling
+- **Cyclic delegation** must be disallowed or safely short-circuited
+- **Griefing**: Delegates could abstain intentionally; recommend transparency tooling
 
 ## Copyright
 
