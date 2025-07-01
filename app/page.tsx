@@ -8,44 +8,59 @@ export default function Home() {
       <Navigation isDark={true} />
 
       {/* Full-Screen Hero Section */}
-      <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
+      <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
         {/* Static Background */}
         <div className="absolute inset-0 bg-gradient-to-br from-neutral-900 via-neutral-800 to-neutral-900"></div>
 
-        <div className="relative z-10 max-w-6xl mx-auto px-6 text-center">
-          <div className="mb-8">
-            <span className="inline-block px-3 py-1 bg-red-500/10 border border-red-500/20 rounded-full text-red-400 text-sm font-medium mb-8">
+        {/* Large Background Logo */}
+        <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1/3 z-0">
+          <div className="w-[800px] h-[800px] md:w-[1000px] md:h-[1000px] lg:w-[1200px] lg:h-[1200px] relative opacity-15">
+            <Image
+              src="/logo-512.png"
+              alt="Rancho Del Vote Logo Background"
+              width={1200}
+              height={1200}
+              className="object-contain"
+            />
+          </div>
+        </div>
+
+        {/* Dark Opaque Overlay */}
+        <div className="absolute inset-0 bg-neutral-900/60 z-5"></div>
+
+        <div className="relative z-10 max-w-7xl mx-auto px-6">
+          {/* New Governance Standard Badge - Top Center */}
+          <div className="text-center mb-12">
+            <span className="inline-block px-3 py-1 bg-red-500/10 border border-red-500/20 rounded-full text-red-400 text-sm font-medium">
               New Governance Standard
             </span>
-            <div className="flex justify-center mb-8">
-              <div className="w-24 h-24 md:w-32 md:h-32 relative">
-                <Image
-                  src="/logo-128.png"
-                  alt="Rancho Del Vote Logo"
-                  width={128}
-                  height={128}
-                  className="object-contain drop-shadow-2xl"
-                />
-              </div>
-            </div>
-            <h2 className="text-5xl md:text-5xl font-semibold mb-6 text-neutral-300">
-              Fix DAO Governance with
-            </h2>
-            <h1 className="text-7xl md:text-8xl font-bold mb-6 leading-tight">
-              <span className="text-red-500">
-                Ranked Choice
-                <br />
-                Delegated Voting
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl text-neutral-300 max-w-4xl mx-auto leading-relaxed mb-12">
-              A new voting standard that combines ranked-choice voting with
-              cascading delegation to unlock greater participation and reduce
-              uncast votes.
-            </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6 mb-16">
+          <div className="flex flex-col lg:flex-row items-center lg:items-start gap-12 lg:gap-16">
+            {/* Empty Space Section - Left 1/3 (for logo positioning) */}
+            <div className="lg:w-1/3"></div>
+
+            {/* Text Section - Right 2/3 */}
+            <div className="lg:w-2/3 text-center lg:text-left">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-6 text-neutral-300">
+                Fix DAO Governance with
+              </h2>
+              <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold mb-6 leading-tight">
+                <span className="text-red-500">
+                  Ranked Choice
+                  <br />
+                  Delegated Voting
+                </span>
+              </h1>
+              <p className="text-lg md:text-xl lg:text-2xl text-neutral-300 leading-relaxed mb-12 max-w-3xl lg:max-w-none">
+                A new voting standard that combines ranked-choice voting with
+                cascading delegation to unlock greater participation and reduce
+                uncast votes.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6 mb-24">
             <a
               href="#demo"
               className="bg-red-500 text-white px-8 py-4 rounded-lg font-semibold hover:bg-red-600 transition-colors text-lg"
@@ -61,8 +76,11 @@ export default function Home() {
           </div>
 
           {/* Scroll Indicator */}
-          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 -translate-x-4">
-            <div className="w-8 h-8 border-2 border-neutral-600 flex items-center justify-center animate-bounce">
+          <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2">
+            <a
+              href="#problem"
+              className="w-8 h-8 border-2 border-neutral-600 flex items-center justify-center animate-bounce hover:border-neutral-400 transition-colors cursor-pointer"
+            >
               <svg
                 className="w-4 h-4 text-neutral-600"
                 fill="none"
@@ -76,13 +94,13 @@ export default function Home() {
                   d="M19 14l-7 7m0 0l-7-7m7 7V3"
                 />
               </svg>
-            </div>
+            </a>
           </div>
         </div>
       </section>
 
       {/* Problem Statement */}
-      <section className="py-20 bg-white relative overflow-hidden">
+      <section id="problem" className="py-20 bg-white relative overflow-hidden">
         <div className="max-w-6xl mx-auto px-6 relative z-10">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-black mb-6">
@@ -152,8 +170,7 @@ export default function Home() {
                     Single Delegate Only
                   </p>
                   <p className="text-gray-600">
-                    Current systems only allow delegation to one address,
-                    creating single points of failure
+                    Current systems only allow delegation to one address
                   </p>
                 </div>
               </div>

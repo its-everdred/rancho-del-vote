@@ -25,6 +25,46 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Enhanced smooth scrolling with scroll padding for fixed nav */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px; /* Account for fixed nav */
+}
+
+/* Use CSS scroll-timeline for better control (when supported) */
+@supports (animation-timeline: scroll()) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  /* Apply custom easing for anchor scroll */
+  :target {
+    animation: smooth-scroll-to-target 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+}
+
+@keyframes smooth-scroll-to-target {
+  from {
+    transform: translateY(-20px);
+    opacity: 0.8;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Respect user preferences */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  :target {
+    animation: none;
+  }
+}
+
 @keyframes gradient-rotate {
   0% {
     transform: rotate(0deg) scale(1.2);

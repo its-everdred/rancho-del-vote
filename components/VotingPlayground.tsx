@@ -136,10 +136,10 @@ export default function VotingPlayground() {
     setShowCascade(true);
 
     // Start cascade animation
-    setTimeout(() => setCascadeStep(1), 500); // Step 1: Check first delegate
-    setTimeout(() => setCascadeStep(2), 1500); // Step 2: First delegate abstains
-    setTimeout(() => setCascadeStep(3), 2500); // Step 3: Check second delegate
-    setTimeout(() => setCascadeStep(4), 3500); // Step 4: Second delegate votes
+    setTimeout(() => setCascadeStep(1), 1000); // Step 1: Check first delegate
+    setTimeout(() => setCascadeStep(2), 3500); // Step 2: First delegate abstains
+    setTimeout(() => setCascadeStep(3), 6000); // Step 3: Check second delegate
+    setTimeout(() => setCascadeStep(4), 8500); // Step 4: Second delegate votes
   };
 
   const reset = () => {
