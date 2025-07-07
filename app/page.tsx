@@ -1,6 +1,6 @@
 import VotingPlayground from "../components/VotingPlayground";
 import Navigation from "../components/Navigation";
-import Image from "next/image";
+import OptimizedImage from "../components/OptimizedImage";
 
 export default function Home() {
   return (
@@ -15,12 +15,14 @@ export default function Home() {
         {/* Large Background Logo */}
         <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1/3 z-0">
           <div className="w-[800px] h-[800px] md:w-[1000px] md:h-[1000px] lg:w-[1200px] lg:h-[1200px] relative opacity-15">
-            <Image
+            <OptimizedImage
               src="/logo-512.png"
               alt="Rancho Del Vote Logo Background"
               width={1200}
               height={1200}
               className="object-contain blur-[3px]"
+              priority={true}
+              quality={75}
             />
           </div>
         </div>
@@ -243,6 +245,15 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="flex items-center space-x-4">
+                  <div className="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center text-white font-bold shrink-0">
+                    →
+                  </div>
+                  <p className="text-neutral-300">
+                    If Bob didn&apos;t vote, check Carol → if yes, use
+                    Carol&apos;s vote
+                  </p>
+                </div>
+                <div className="flex items-center space-x-4">
                   <div className="w-10 h-10 bg-neutral-600 rounded-full flex items-center justify-center text-white font-bold shrink-0">
                     ∅
                   </div>
@@ -316,7 +327,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center justify-between mb-8">
             <div className="flex items-center space-x-3 mb-4 md:mb-0">
               <div className="w-8 h-8 relative">
-                <Image
+                <OptimizedImage
                   src="/logo-32.png"
                   alt="Rancho Del Vote Logo"
                   width={32}

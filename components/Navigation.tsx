@@ -39,6 +39,7 @@ export default function Navigation({
                 width={32}
                 height={32}
                 className="object-contain"
+                priority={true}
               />
             </div>
             <div>
