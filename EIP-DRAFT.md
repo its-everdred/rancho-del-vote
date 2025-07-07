@@ -2,7 +2,7 @@
 EIP: TBD
 Title: Ranked Delegated Voting Standard
 Author: [everdred] <[its-everdred@gmail.com]>
-Discussions-To: https://gov.optimism.io/t/the-weight-of-influence-an-analysis-of-the-power-in-the-collective/9966
+Discussions-To: TBD
 Status: Draft
 Type: Standards Track
 Category: ERC
@@ -10,9 +10,11 @@ Created: 2025-06-30
 Requires: ERC-20, ERC-5805, ERC-1202 (optional)
 ---
 
+# WORK IN PROGRESS
+
 ## Simple Summary
 
-A standard for ranked delegated voting in Ethereum-based DAOs that allows token holders to create ordered delegation lists. Voting power cascades down the list to the highest-ranked delegate who voted on a specific proposal. This improves voter participation and ensures delegated tokens are actively used without compromising user control.
+A standard for ranked delegated voting in DAOs that allows token holders to create ordered delegation lists and point their token votes to these lists. Voting power cascades down the list to the highest-ranked delegate who voted on a specific proposal. This improves voter participation and ensures delegated tokens are actively used without compromising user control.
 
 ## Abstract
 
