@@ -49,7 +49,7 @@ export default function Home() {
                 <span className="text-red-500">
                   Ranked Choice
                   <br />
-                  Delegated Voting
+                  Delegation
                 </span>
               </h1>
               <p className="text-lg md:text-xl lg:text-2xl text-neutral-300 leading-relaxed mb-12 max-w-3xl lg:max-w-none">
