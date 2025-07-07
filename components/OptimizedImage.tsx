@@ -28,7 +28,6 @@ export default function OptimizedImage({
       className={className}
       priority={priority}
       quality={quality}
-      unoptimized={true}
     />
   );
 }
