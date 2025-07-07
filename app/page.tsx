@@ -17,7 +17,7 @@ export default function Home() {
           <div className="w-[800px] h-[800px] md:w-[1000px] md:h-[1000px] lg:w-[1200px] lg:h-[1200px] relative opacity-15">
             <OptimizedImage
               src="/logo-512.png"
-              alt="Rancho Del Vote Logo Background"
+              alt="Ranked Choice Delegation Logo Background"
               width={1200}
               height={1200}
               className="object-contain blur-[3px]"
@@ -329,14 +329,14 @@ export default function Home() {
               <div className="w-8 h-8 relative">
                 <OptimizedImage
                   src="/logo-32.png"
-                  alt="Rancho Del Vote Logo"
+                  alt="Ranked Choice Delegation Logo"
                   width={32}
                   height={32}
                   className="object-contain"
                 />
               </div>
               <span className="text-neutral-400 font-medium">
-                Rancho Del Vote
+                Ranked Choice Delegation
               </span>
             </div>
             <div className="flex items-center space-x-8 text-neutral-400 text-sm">

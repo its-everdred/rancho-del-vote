@@ -1,4 +1,4 @@
-# Rancho Del Vote
+# Ranked Choice Delegation
 
 **Ranked-Choice Delegated Voting for Ethereum DAOs**
 
@@ -15,7 +15,7 @@ DAO governance today is rigid and ineffective:
 
 ## The Solution: Ranked-Choice Delegation
 
-Rancho Del Vote introduces a new voting mechanism where:
+Ranked Choice Delegation introduces a new voting mechanism where:
 
 1. **Ranked Delegate Lists**: Token holders define a ranked list of trusted delegates (e.g., [Alice, Bob, Carol])
 2. **Cascading Fallback**: If a token holder doesn't vote directly, their voting power cascades through their ranked list
@@ -30,7 +30,7 @@ Token Holder → [Delegate 1, Delegate 2, Delegate 3, ...]
               Did I vote directly? → YES: Use my vote
                     ↓ NO
               Did Delegate 1 vote? → YES: Use their vote
-                    ↓ NO  
+                    ↓ NO
               Did Delegate 2 vote? → YES: Use their vote
                     ↓ NO
               Did Delegate 3 vote? → YES: Use their vote

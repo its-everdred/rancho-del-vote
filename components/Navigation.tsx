@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import Image from 'next/image';
-import { usePathname } from 'next/navigation';
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 interface NavigationProps {
   isDark?: boolean;
@@ -10,32 +10,41 @@ interface NavigationProps {
   showThemeToggle?: boolean;
 }
 
-export default function Navigation({ 
-  isDark = true, 
-  onToggleTheme, 
-  showThemeToggle = false 
+export default function Navigation({
+  isDark = true,
+  onToggleTheme,
+  showThemeToggle = false,
 }: NavigationProps) {
   const pathname = usePathname();
 
   const navItems = [
-    { href: '/', label: 'Home' },
-    { href: '/eip', label: 'EIP Draft' },
-    { href: 'https://github.com/its-everdred/rancho-del-vote', label: 'GitHub', external: true }
+    { href: "/", label: "Home" },
+    { href: "/eip", label: "EIP Draft" },
+    {
+      href: "https://github.com/its-everdred/rancho-del-vote",
+      label: "GitHub",
+      external: true,
+    },
   ];
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-sm transition-colors duration-300 ${
-      isDark 
-        ? 'border-neutral-800 bg-neutral-900/80' 
-        : 'border-gray-200 bg-white/80'
-    }`}>
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 border-b backdrop-blur-sm transition-colors duration-300 ${
+        isDark
+          ? "border-neutral-800 bg-neutral-900/80"
+          : "border-gray-200 bg-white/80"
+      }`}
+    >
       <div className="max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <Link href="/" className="flex items-center space-x-3 hover:opacity-80 transition-opacity">
+          <Link
+            href="/"
+            className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
+          >
             <div className="w-8 h-8 relative">
               <Image
                 src="/logo-32.png"
-                alt="Rancho Del Vote Logo"
+                alt="Ranked Choice Delegation Logo"
                 width={32}
                 height={32}
                 className="object-contain"
@@ -44,7 +53,7 @@ export default function Navigation({
             </div>
             <div>
               <h1 className="text-lg font-semibold">
-                Rancho Del Vote
+                Ranked Choice Delegation
               </h1>
             </div>
           </Link>
@@ -56,20 +65,20 @@ export default function Navigation({
                   className="p-1 hover:opacity-80 transition-opacity text-lg cursor-pointer flex items-center justify-center"
                   aria-label="Toggle theme"
                 >
-                  {isDark ? '☀️' : '🌙'}
+                  {isDark ? "☀️" : "🌙"}
                 </button>
               )}
               <nav className="hidden md:flex items-center space-x-6 text-sm">
                 {navItems.map((item) => {
                   const isActive = item.href === pathname;
                   const baseClasses = "transition-colors font-medium";
-                  const activeClasses = isDark 
-                    ? "text-red-400" 
+                  const activeClasses = isDark
+                    ? "text-red-400"
                     : "text-red-600";
-                  const inactiveClasses = isDark 
-                    ? "text-neutral-400 hover:text-white" 
+                  const inactiveClasses = isDark
+                    ? "text-neutral-400 hover:text-white"
                     : "text-gray-600 hover:text-black";
-                  
+
                   if (item.external) {
                     return (
                       <a
@@ -83,12 +92,14 @@ export default function Navigation({
                       </a>
                     );
                   }
-                  
+
                   return (
                     <Link
                       key={item.href}
                       href={item.href}
-                      className={`${baseClasses} ${isActive ? activeClasses : inactiveClasses}`}
+                      className={`${baseClasses} ${
+                        isActive ? activeClasses : inactiveClasses
+                      }`}
                     >
                       {item.label}
                     </Link>
