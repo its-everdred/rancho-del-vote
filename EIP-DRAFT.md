@@ -31,6 +31,74 @@ In DAOs such as Optimism, a vast majority of voting power is under-utilized:
 
 This leads to governance capture and apathy. Traditional delegation is fragile: if your delegate is inactive, your vote is lost. A ranked delegation system ensures votes find the most active trusted representative and reduces vote wastage.
 
+### Existing Standards
+
+Existing contract standards Governor.sol, Votes.sol are incapable of supporting ranked delegation:
+
+1. Dynamic vote resolution during voting period
+2. Multiple delegate storage per account
+3. Conditional vote power transfer based on delegate activity
+4. Per-proposal delegation resolution rather than global delegation
+
+These requirements are fundamentally incompatible with the
+checkpoint-based, pre-calculated voting power model used by
+OpenZeppelin's Governor system in the following ways:
+
+1. Single Delegate Model (Votes.sol)
+
+- Line 38: mapping(address account => address) private \_delegatee;
+- Problem: Each account can only delegate to one address
+- Impact: Cannot store ranked delegation lists
+
+2. Static Vote Weight Calculation (GovernorVotes.sol)
+
+- Line 62: return token().getPastVotes(account, timepoint);
+- Problem: Voting power is pre-calculated and stored in checkpoints
+- Impact: Cannot perform dynamic cascading at vote time
+
+3. Immutable Delegation Storage (Votes.sol)
+
+- Line 169-175: \_delegate() function overwrites previous delegation
+- Problem: Delegation is permanent until explicitly changed
+- Impact: No concept of "fallback" or "ranked" delegates
+
+4. Checkpoint-Based System (Votes.sol)
+
+- Line 194-213: \_moveDelegateVotes() immediately transfers voting
+  power
+- Problem: Voting power is immediately transferred to delegate
+- Impact: Cannot hold voting power in escrow for cascading
+
+5. Governor Vote Counting Architecture
+
+- Governor.sol: Expects fixed voting power per account at proposal
+  snapshot
+- Problem: Vote counting assumes static delegation at proposal
+  creation
+- Impact: Cannot dynamically resolve delegation during voting
+  period
+
+Specific Blocking Functions
+
+ERC20Votes/Votes.sol:
+
+- delegates() - Returns single delegate, not ranked list
+- \_delegate() - Overwrites delegation, no ranking concept
+- \_moveDelegateVotes() - Immediately transfers power
+- getVotes() - Returns pre-calculated power, not dynamic
+
+GovernorVotes.sol:
+
+- \_getVotes() - Calls token().getPastVotes() for static lookup
+- Cannot override without breaking checkpoint system
+
+Governor.sol:
+
+- Vote counting extensions expect fixed voting power
+- Proposal lifecycle assumes static delegation
+
+Summary
+
 ## Specification
 
 WIP
