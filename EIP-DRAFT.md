@@ -33,56 +33,8 @@ This leads to governance capture and apathy. Traditional delegation is fragile: 
 
 ## Specification
 
-### New Functions
-
-#### Delegation List
-
-```solidity
-/// @notice Set a ranked list of delegates (highest priority first)
-function setDelegationList(address[] calldata rankedDelegates) external;
-
-/// @notice Get the delegation list for an account
-function getDelegationList(address account) external view returns (address[] memory);
-```
-
-#### Proposal Resolution
-
-Integrates with `Governor`-style voting:
-
-1. If the token holder voted directly, use their vote
-2. Else, iterate through their delegate list and assign their voting power to the first delegate who voted
-3. Else, count as abstained or uncast
-
-This logic can be implemented in:
-
-- An off-chain vote counter (e.g. Snapshot strategy)
-- On-chain `Governor` contract via a proposal finalization function
-
-#### Snapshot Compatibility
-
-- At the snapshot block (set by proposal), determine the effective vote
-- Voter's delegate list must be fixed before the proposal snapshot
-
-## Rationale
-
-- **Gas efficiency**: Storage is limited to an array of addresses per user
-- **Override friendly**: Direct voting overrides delegate votes
-- **Simplicity**: Easy to explain; behaves like email forwarding with a fallback
-
-## Backward Compatibility
-
-The standard builds on `ERC20Votes` and `ERC5805` (for snapshotting). No changes are required to token contracts; only governance modules need to support fallback logic.
+WIP
 
 ## Reference Implementation
 
-- [https://github.com/rancho-del-vote/contracts](https://github.com/rancho-del-vote/contracts)
-- ENS Default Delegate Proposal (discussion): [https://discuss.ens.domains/t/](https://discuss.ens.domains/t/)...
-
-## Security Considerations
-
-- **Cyclic delegation** must be disallowed or safely short-circuited
-- **Griefing**: Delegates could abstain intentionally; recommend transparency tooling
-
-## Copyright
-
-Copyright and related rights waived via CC0.
+WIP
