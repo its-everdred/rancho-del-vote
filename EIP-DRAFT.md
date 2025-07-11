@@ -31,9 +31,9 @@ In DAOs such as Optimism, a vast majority of voting power is under-utilized:
 
 This leads to governance capture and apathy. Traditional delegation is fragile: if your delegate is inactive, your vote is lost. A ranked delegation system ensures votes find the most active trusted representative and reduces vote wastage.
 
-### Existing Standards
+### Limitations of Existing Standards
 
-Existing contract standards Governor.sol, Votes.sol are incapable of supporting ranked delegation:
+Existing contract standards Governor.sol, Votes.sol, GovernorVotes.sol are incapable of supporting ranked delegation as-is:
 
 1. Dynamic vote resolution during voting period
 2. Multiple delegate storage per account
@@ -43,6 +43,27 @@ Existing contract standards Governor.sol, Votes.sol are incapable of supporting 
 These requirements are fundamentally incompatible with the
 checkpoint-based, pre-calculated voting power model used by
 OpenZeppelin's Governor system in the following ways:
+
+Specific Blocking Functions
+
+ERC20Votes/Votes.sol:
+
+- delegates() - Returns single delegate, not ranked list
+- \_delegate() - Overwrites delegation, no ranking concept
+- \_moveDelegateVotes() - Immediately transfers power
+- getVotes() - Returns pre-calculated power, not dynamic
+
+GovernorVotes.sol:
+
+- \_getVotes() - Calls token().getPastVotes() for static lookup
+- Cannot override without breaking checkpoint system
+
+Governor.sol:
+
+- Vote counting extensions expect fixed voting power
+- Proposal lifecycle assumes static delegation
+
+#### Detailed limitations
 
 1. Single Delegate Model (Votes.sol)
 
@@ -77,27 +98,6 @@ OpenZeppelin's Governor system in the following ways:
   creation
 - Impact: Cannot dynamically resolve delegation during voting
   period
-
-Specific Blocking Functions
-
-ERC20Votes/Votes.sol:
-
-- delegates() - Returns single delegate, not ranked list
-- \_delegate() - Overwrites delegation, no ranking concept
-- \_moveDelegateVotes() - Immediately transfers power
-- getVotes() - Returns pre-calculated power, not dynamic
-
-GovernorVotes.sol:
-
-- \_getVotes() - Calls token().getPastVotes() for static lookup
-- Cannot override without breaking checkpoint system
-
-Governor.sol:
-
-- Vote counting extensions expect fixed voting power
-- Proposal lifecycle assumes static delegation
-
-Summary
 
 ## Specification
 
