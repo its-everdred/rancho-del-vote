@@ -70,10 +70,10 @@ export default function Home() {
               Try Demo
             </a>
             <a
-              href="/eip"
+              href="#problem"
               className="border border-neutral-700 text-neutral-300 px-8 py-4 rounded-lg font-semibold hover:bg-neutral-800 hover:text-white transition-colors text-lg"
             >
-              Read EIP Draft
+              Read More
             </a>
           </div>
 

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 interface NavigationProps {
   isDark?: boolean;
@@ -16,6 +17,7 @@ export default function Navigation({
   showThemeToggle = false,
 }: NavigationProps) {
   const pathname = usePathname();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navItems = [
     { href: "/", label: "Home" },
@@ -68,6 +70,8 @@ export default function Navigation({
                   {isDark ? "☀️" : "🌙"}
                 </button>
               )}
+              
+              {/* Desktop Navigation */}
               <nav className="hidden md:flex items-center space-x-6 text-sm">
                 {navItems.map((item) => {
                   const isActive = item.href === pathname;
@@ -106,12 +110,76 @@ export default function Navigation({
                   );
                 })}
               </nav>
+              
+              {/* Mobile Hamburger Menu */}
+              <button
+                className="md:hidden p-2 hover:opacity-80 transition-opacity"
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label="Toggle menu"
+              >
+                <div className="w-6 h-6 relative">
+                  <span className={`absolute left-0 w-6 h-0.5 transition-all duration-300 ${
+                    isDark ? 'bg-white' : 'bg-black'
+                  } ${isMenuOpen ? 'top-2.5 rotate-45' : 'top-1'}`}></span>
+                  <span className={`absolute left-0 w-6 h-0.5 transition-all duration-300 ${
+                    isDark ? 'bg-white' : 'bg-black'
+                  } ${isMenuOpen ? 'opacity-0' : 'top-2.5'}`}></span>
+                  <span className={`absolute left-0 w-6 h-0.5 transition-all duration-300 ${
+                    isDark ? 'bg-white' : 'bg-black'
+                  } ${isMenuOpen ? 'top-2.5 -rotate-45' : 'top-4'}`}></span>
+                </div>
+              </button>
             </div>
-            <button className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors text-sm font-medium">
-              Connect Wallet
-            </button>
           </div>
         </div>
+        
+        {/* Mobile Menu */}
+        {isMenuOpen && (
+          <div className={`md:hidden border-t ${
+            isDark ? 'border-neutral-800' : 'border-gray-200'
+          }`}>
+            <nav className="px-6 py-4 space-y-4">
+              {navItems.map((item) => {
+                const isActive = item.href === pathname;
+                const baseClasses = "block transition-colors font-medium";
+                const activeClasses = isDark
+                  ? "text-red-400"
+                  : "text-red-600";
+                const inactiveClasses = isDark
+                  ? "text-neutral-400 hover:text-white"
+                  : "text-gray-600 hover:text-black";
+
+                if (item.external) {
+                  return (
+                    <a
+                      key={item.href}
+                      href={item.href}
+                      className={`${baseClasses} ${inactiveClasses}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      {item.label}
+                    </a>
+                  );
+                }
+
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={`${baseClasses} ${
+                      isActive ? activeClasses : inactiveClasses
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );
