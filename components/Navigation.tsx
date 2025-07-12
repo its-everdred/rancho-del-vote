@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface NavigationProps {
   isDark?: boolean;
@@ -17,6 +18,11 @@ export default function Navigation({
 }: NavigationProps) {
   const pathname = usePathname();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const navItems = [
     { href: "/", label: "Home" },
@@ -43,14 +49,13 @@ export default function Navigation({
             className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
           >
             <div className="w-8 h-8 relative">
-              <img
-                src="/logo-32.png"
-                srcSet="/logo-32.png 32w, /logo-64.png 64w, /logo-128.png 128w, /logo-256.png 256w, /logo-512.png 512w"
-                sizes="32px"
-                width={32}
-                height={32}
+              <Image
+                src="/logo-64.png"
                 alt="Ranked Choice Delegation Logo"
-                style={{ objectFit: "contain", width: "100%", height: "100%" }}
+                fill
+                sizes="32px"
+                className="object-contain"
+                priority={true}
               />
             </div>
             <div>
@@ -140,7 +145,7 @@ export default function Navigation({
         </div>
 
         {/* Mobile Menu */}
-        {isMenuOpen && (
+        {isMounted && isMenuOpen && (
           <div
             className={`md:hidden border-t ${
               isDark ? "border-neutral-800" : "border-gray-200"
