@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
@@ -44,13 +43,14 @@ export default function Navigation({
             className="flex items-center space-x-3 hover:opacity-80 transition-opacity"
           >
             <div className="w-8 h-8 relative">
-              <Image
+              <img
                 src="/logo-32.png"
-                alt="Ranked Choice Delegation Logo"
+                srcSet="/logo-32.png 32w, /logo-64.png 64w, /logo-128.png 128w, /logo-256.png 256w, /logo-512.png 512w"
+                sizes="32px"
                 width={32}
                 height={32}
-                className="object-contain"
-                priority={true}
+                alt="Ranked Choice Delegation Logo"
+                style={{ objectFit: "contain", width: "100%", height: "100%" }}
               />
             </div>
             <div>
@@ -70,7 +70,7 @@ export default function Navigation({
                   {isDark ? "☀️" : "🌙"}
                 </button>
               )}
-              
+
               {/* Desktop Navigation */}
               <nav className="hidden md:flex items-center space-x-6 text-sm">
                 {navItems.map((item) => {
@@ -110,7 +110,7 @@ export default function Navigation({
                   );
                 })}
               </nav>
-              
+
               {/* Mobile Hamburger Menu */}
               <button
                 className="md:hidden p-2 hover:opacity-80 transition-opacity"
@@ -118,33 +118,39 @@ export default function Navigation({
                 aria-label="Toggle menu"
               >
                 <div className="w-6 h-6 relative">
-                  <span className={`absolute left-0 w-6 h-0.5 transition-all duration-300 ${
-                    isDark ? 'bg-white' : 'bg-black'
-                  } ${isMenuOpen ? 'top-2.5 rotate-45' : 'top-1'}`}></span>
-                  <span className={`absolute left-0 w-6 h-0.5 transition-all duration-300 ${
-                    isDark ? 'bg-white' : 'bg-black'
-                  } ${isMenuOpen ? 'opacity-0' : 'top-2.5'}`}></span>
-                  <span className={`absolute left-0 w-6 h-0.5 transition-all duration-300 ${
-                    isDark ? 'bg-white' : 'bg-black'
-                  } ${isMenuOpen ? 'top-2.5 -rotate-45' : 'top-4'}`}></span>
+                  <span
+                    className={`absolute left-0 w-6 h-0.5 transition-all duration-300 ${
+                      isDark ? "bg-white" : "bg-black"
+                    } ${isMenuOpen ? "top-2.5 rotate-45" : "top-1"}`}
+                  ></span>
+                  <span
+                    className={`absolute left-0 w-6 h-0.5 transition-all duration-300 ${
+                      isDark ? "bg-white" : "bg-black"
+                    } ${isMenuOpen ? "opacity-0" : "top-2.5"}`}
+                  ></span>
+                  <span
+                    className={`absolute left-0 w-6 h-0.5 transition-all duration-300 ${
+                      isDark ? "bg-white" : "bg-black"
+                    } ${isMenuOpen ? "top-2.5 -rotate-45" : "top-4"}`}
+                  ></span>
                 </div>
               </button>
             </div>
           </div>
         </div>
-        
+
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className={`md:hidden border-t ${
-            isDark ? 'border-neutral-800' : 'border-gray-200'
-          }`}>
+          <div
+            className={`md:hidden border-t ${
+              isDark ? "border-neutral-800" : "border-gray-200"
+            }`}
+          >
             <nav className="px-6 py-4 space-y-4">
               {navItems.map((item) => {
                 const isActive = item.href === pathname;
                 const baseClasses = "block transition-colors font-medium";
-                const activeClasses = isDark
-                  ? "text-red-400"
-                  : "text-red-600";
+                const activeClasses = isDark ? "text-red-400" : "text-red-600";
                 const inactiveClasses = isDark
                   ? "text-neutral-400 hover:text-white"
                   : "text-gray-600 hover:text-black";

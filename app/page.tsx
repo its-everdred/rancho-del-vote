@@ -14,7 +14,7 @@ export default function Home() {
 
         {/* Large Background Logo */}
         <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1/3 z-0">
-          <div className="w-[800px] h-[800px] md:w-[1000px] md:h-[1000px] lg:w-[1200px] lg:h-[1200px] relative opacity-15">
+          <div className="w-[800px] h-[800px] md:w-[1000px] md:h-[1000px] lg:w-[1200px] lg:h-[1200px] relative opacity-25">
             <OptimizedImage
               src="/logo-512.png"
               alt="Ranked Choice Delegation Logo Background"
