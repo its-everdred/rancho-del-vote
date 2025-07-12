@@ -328,7 +328,7 @@ export default function Home() {
             <div className="flex items-center space-x-3 mb-4 md:mb-0">
               <div className="w-8 h-8 relative">
                 <OptimizedImage
-                  src="/logo-32.png"
+                  src="/logo-64.png"
                   alt="Ranked Choice Delegation Logo"
                   width={32}
                   height={32}
