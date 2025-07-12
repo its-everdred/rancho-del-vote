@@ -374,6 +374,58 @@ export default function EIPPage() {
                 </div>
               </div>
 
+              <h2 className="text-2xl font-bold mb-4">Possible Solutions</h2>
+              <p className="mb-4 leading-relaxed">
+                There are several delegation strategies that could address the limitations of existing standards:
+              </p>
+              
+              <div className="space-y-6">
+                <div className={`p-4 rounded-lg border ${
+                  isDark ? 'bg-neutral-800/30 border-neutral-700' : 'bg-gray-50 border-gray-200'
+                }`}>
+                  <h4 className="text-lg font-semibold mb-2">1. Ranked Delegation</h4>
+                  <p className="mb-2 leading-relaxed">
+                    A token holder selects many ranked delegates in priority order. When voting, the system cascades through the list until finding an active delegate who voted.
+                  </p>
+                  <p className="text-sm font-medium">
+                    Example: [Alice, Bob, Carol] → If Alice didn&apos;t vote, check Bob → If Bob didn&apos;t vote, use Carol&apos;s vote
+                  </p>
+                </div>
+
+                <div className={`p-4 rounded-lg border ${
+                  isDark ? 'bg-neutral-800/30 border-neutral-700' : 'bg-gray-50 border-gray-200'
+                }`}>
+                  <h4 className="text-lg font-semibold mb-2">2. Chained Delegation</h4>
+                  <p className="mb-2 leading-relaxed">
+                    A token holder selects one delegate, who may select another delegate, creating a delegation chain. Voting power flows through the chain to the final active delegate.
+                  </p>
+                  <p className="text-sm font-medium">
+                    Example: Token Holder → Alice → Bob → Carol (if Carol votes, she gets all the delegated power)
+                  </p>
+                </div>
+
+                <div className={`p-4 rounded-lg border ${
+                  isDark ? 'bg-neutral-800/30 border-neutral-700' : 'bg-gray-50 border-gray-200'
+                }`}>
+                  <h4 className="text-lg font-semibold mb-2">3. Fractional Delegation</h4>
+                  <p className="mb-2 leading-relaxed">
+                    A token holder selects a set of delegates and allocates different portions of their tokens to each delegate, allowing for diversified representation.
+                  </p>
+                  <p className="text-sm font-medium">
+                    Example: 40% to Alice, 35% to Bob, 25% to Carol (each delegate receives their allocated portion if they vote)
+                  </p>
+                </div>
+              </div>
+
+              <div className={`mt-6 p-4 rounded-lg border ${
+                isDark ? 'bg-blue-900/20 border-blue-700/30' : 'bg-blue-50 border-blue-200'
+              }`}>
+                <h4 className="text-lg font-semibold mb-2">Optimal Solution</h4>
+                <p className="leading-relaxed">
+                  An optimal solution is one that can support all of these strategies or a combination of them, allowing the token issuer to determine which delegation strategies they want to support for their specific project and governance needs.
+                </p>
+              </div>
+
               <h2 className="text-2xl font-bold mb-4">Specification</h2>
               <p className="mb-4 leading-relaxed italic">WIP</p>
 
