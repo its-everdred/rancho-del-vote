@@ -1,68 +1,101 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+import "@openzeppelin/contracts/utils/Counters.sol";
+
 /**
  * @title DelegationRegistry
- * @dev Registry contract for managing delegation lists without deploying individual contracts
+ * @dev Registry contract for managing delegation lists that can be shared across tokens
  */
 contract DelegationRegistry {
-    /// @notice Emitted when a delegation list is set
-    event DelegationListSet(address indexed account, bytes32 indexed listId, address[] delegates);
+    using Counters for Counters.Counter;
 
-    /// @notice Mapping from global key to delegation list
-    mapping(bytes32 => address[]) public delegationList;
+    /// @notice Emitted when a delegation list is created or updated
+    event DelegationListSet(address indexed owner, uint256 indexed listId, address[] delegates);
     
-    /// @notice Mapping from account to their list keys
-    mapping(address => bytes32[]) public userListKeys;
+    /// @notice Emitted when a user points their tokens to a delegation list
+    event DelegationPointer(address indexed user, address indexed listOwner, uint256 indexed listId);
+
+    /// @notice Counter for auto-incrementing list IDs
+    Counters.Counter private _listIdCounter;
+
+    /// @notice Mapping from owner to their list IDs
+    mapping(address => uint256[]) public listIds;
+    
+    /// @notice Mapping from list ID to delegate addresses
+    mapping(uint256 => address[]) public delegates;
+    
+    /// @notice Mapping from list ID to owner address for O(1) ownership lookup
+    mapping(uint256 => address) public owners;
 
     /**
-     * @notice Creates or updates a delegation list for the calling account
-     * @param listId Unique identifier for the delegation list
+     * @notice Creates a new delegation list with auto-generated ID
+     * @param delegates Array of delegate addresses in priority order (highest to lowest priority)
+     * @return listId The auto-generated list ID
+     */
+    function create(address[] calldata _delegates) external returns (uint256 listId) {
+        require(_delegates.length > 0, "Cannot create empty list");
+        
+        _listIdCounter.increment();
+        listId = _listIdCounter.current();
+        
+        listIds[msg.sender].push(listId);
+        delegates[listId] = _delegates;
+        owners[listId] = msg.sender;
+        
+        emit DelegationListSet(msg.sender, listId, _delegates);
+        return listId;
+    }
+
+    /**
+     * @notice Updates an existing delegation list (only owner can update)
+     * @param listId The list ID to update
      * @param delegates Array of delegate addresses in priority order (highest to lowest priority)
      */
-    function setDelegationList(bytes32 listId, address[] calldata delegates) external {
-        address account = msg.sender;
+    function update(uint256 listId, address[] calldata _delegates) external {
+        require(_delegates.length > 0, "Cannot set empty list");
+        require(owners[listId] == msg.sender, "Only list owner can update");
         
-        // Create global key: keccak256(account + listId)
-        bytes32 globalKey = keccak256(abi.encodePacked(account, listId));
+        delegates[listId] = _delegates;
         
-        // If this is a new list, add to user's list keys
-        if (delegationList[globalKey].length == 0 && delegates.length > 0) {
-            userListKeys[account].push(globalKey);
-        }
+        emit DelegationListSet(msg.sender, listId, _delegates);
+    }
+
+    /**
+     * @notice Point your tokens to someone else's delegation list
+     * @param listOwnerAddr The owner of the delegation list
+     * @param listId The list ID to point to
+     */
+    function pointToDelegationList(address listOwnerAddr, uint256 listId) external {
+        require(delegates[listId].length > 0, "List does not exist");
+        require(owners[listId] == listOwnerAddr, "Specified owner does not own this list");
         
-        // Set new delegation list (array order determines priority)
-        delegationList[globalKey] = delegates;
-        
-        emit DelegationListSet(account, listId, delegates);
+        emit DelegationPointer(msg.sender, listOwnerAddr, listId);
     }
 
 
+
     /**
-     * @notice Gets the delegation list for a specific account and list ID
-     * @param account The account to query
+     * @notice Gets the delegation list for a specific list ID
      * @param listId The list ID to query
      * @return delegates Array of delegate addresses in priority order
      */
-    function getDelegationList(address account, bytes32 listId) external view returns (address[] memory delegates) {
-        bytes32 globalKey = keccak256(abi.encodePacked(account, listId));
-        return delegationList[globalKey];
+    function getDelegationList(uint256 listId) external view returns (address[] memory) {
+        return delegates[listId];
     }
 
 
     /**
-     * @notice Gets the ranking of a specific delegate for an account and list
-     * @param account The account to query
+     * @notice Gets the ranking of a specific delegate in a list
      * @param listId The list ID to query
      * @param delegate The delegate address to check
      * @return ranking The ranking position (0-based index), or type(uint256).max if not in list
      */
-    function getDelegateRanking(address account, bytes32 listId, address delegate) external view returns (uint256 ranking) {
-        bytes32 globalKey = keccak256(abi.encodePacked(account, listId));
-        address[] memory delegates = delegationList[globalKey];
+    function getDelegateRanking(uint256 listId, address delegate) external view returns (uint256 ranking) {
+        address[] memory _delegates = delegates[listId];
         
-        for (uint256 i = 0; i < delegates.length; i++) {
-            if (delegates[i] == delegate) {
+        for (uint256 i = 0; i < _delegates.length; i++) {
+            if (_delegates[i] == delegate) {
                 return i; // Return 0-based index (0 = highest priority)
             }
         }
@@ -70,42 +103,55 @@ contract DelegationRegistry {
     }
 
     /**
-     * @notice Gets the number of delegates in an account's specific delegation list
-     * @param account The account to query
+     * @notice Gets the number of delegates in a delegation list
      * @param listId The list ID to query
      * @return count The number of delegates
      */
-    function getDelegationListLength(address account, bytes32 listId) external view returns (uint256 count) {
-        bytes32 globalKey = keccak256(abi.encodePacked(account, listId));
-        return delegationList[globalKey].length;
+    function getDelegationListLength(uint256 listId) external view returns (uint256 count) {
+        return delegates[listId].length;
     }
 
     /**
-     * @notice Gets all global list keys for a specific account
+     * @notice Gets all list IDs owned by a specific account
      * @param account The account to query
-     * @return listKeys Array of global list keys owned by the account
+     * @return listIds Array of list IDs owned by the account
      */
-    function getUserListKeys(address account) external view returns (bytes32[] memory listKeys) {
-        return userListKeys[account];
+    function getOwnerListIds(address account) external view returns (uint256[] memory) {
+        return listIds[account];
     }
 
     /**
-     * @notice Gets the number of delegation lists for an account
+     * @notice Gets the number of delegation lists owned by an account
      * @param account The account to query
-     * @return count The number of lists
+     * @return count The number of owned lists
      */
-    function getUserListCount(address account) external view returns (uint256 count) {
-        return userListKeys[account].length;
+    function getOwnerListCount(address account) external view returns (uint256 count) {
+        return listIds[account].length;
     }
 
     /**
-     * @notice Checks if a delegation list exists for an account
-     * @param account The account to query
+     * @notice Checks if a delegation list exists
      * @param listId The list ID to check
      * @return exists True if the list exists
      */
-    function doesListExist(address account, bytes32 listId) external view returns (bool exists) {
-        bytes32 globalKey = keccak256(abi.encodePacked(account, listId));
-        return delegationList[globalKey].length > 0;
+    function listExists(uint256 listId) external view returns (bool exists) {
+        return delegates[listId].length > 0;
+    }
+
+    /**
+     * @notice Gets the current counter value (next list ID that will be assigned)
+     * @return current The current counter value
+     */
+    function getCurrentListId() external view returns (uint256 current) {
+        return _listIdCounter.current();
+    }
+
+    /**
+     * @notice Gets the owner of a specific delegation list
+     * @param listId The list ID
+     * @return owner The owner address (or address(0) if not found)
+     */
+    function getListOwner(uint256 listId) external view returns (address owner) {
+        return owners[listId];
     }
 }

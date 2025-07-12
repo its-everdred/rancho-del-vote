@@ -489,6 +489,19 @@ export default function EIPPage() {
                     gas-efficient, but may limit flexibility and upgradability.
                   </div>
                 </li>
+                <li>
+                  Should delegation list updates use full array overwrite or support incremental add/remove operations?
+                  <div className="mt-1 text-sm text-neutral-500 dark:text-neutral-300">
+                    Gas analysis shows full overwrite is more efficient for most scenarios:
+                    <ul className="list-disc list-inside mt-1 ml-4 space-y-1">
+                      <li>Full overwrite wins for any changes involving 2+ delegates</li>
+                      <li>Incremental operations only cheaper for single additions at list end (~16k gas savings)</li>
+                      <li>Position matters significantly: adding at beginning costs ~72k gas vs ~31k at end</li>
+                      <li>Operation cost scales with list size: 10 delegates = 42k gas, 50 delegates = 99k gas</li>
+                    </ul>
+                    Conclusion: Simple full-array replacement provides better UX and gas efficiency for typical use cases.
+                  </div>
+                </li>
               </ol>
             </div>
           </div>

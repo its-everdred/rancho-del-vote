@@ -93,7 +93,7 @@ contract DelegationRegistryTest is Test {
         assertEq(storedGaming[1], dave);
 
         // Verify list tracking
-        assertEq(registry.getUserListCount(user), 2);
+        assertEq(registry.getUserOwnedListCount(user), 2);
         assertTrue(registry.doesListExist(user, LIST_DEFI));
         assertTrue(registry.doesListExist(user, LIST_GAMING));
     }
