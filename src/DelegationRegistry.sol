@@ -12,7 +12,7 @@ contract DelegationRegistry {
 
     /// @notice Emitted when a delegation list is created or updated
     event DelegationListSet(address indexed owner, uint256 indexed listId, address[] delegates);
-    
+
     /// @notice Emitted when a user points their tokens to a delegation list
     event DelegationPointer(address indexed user, address indexed listOwner, uint256 indexed listId);
 
@@ -21,10 +21,10 @@ contract DelegationRegistry {
 
     /// @notice Mapping from owner to their list IDs
     mapping(address => uint256[]) public listIds;
-    
+
     /// @notice Mapping from list ID to delegate addresses
     mapping(uint256 => address[]) public delegates;
-    
+
     /// @notice Mapping from list ID to owner address for O(1) ownership lookup
     mapping(uint256 => address) public owners;
 
@@ -35,14 +35,14 @@ contract DelegationRegistry {
      */
     function create(address[] calldata _delegates) external returns (uint256 listId) {
         require(_delegates.length > 0, "Cannot create empty list");
-        
+
         _listIdCounter.increment();
         listId = _listIdCounter.current();
-        
+
         listIds[msg.sender].push(listId);
         delegates[listId] = _delegates;
         owners[listId] = msg.sender;
-        
+
         emit DelegationListSet(msg.sender, listId, _delegates);
         return listId;
     }
@@ -55,25 +55,11 @@ contract DelegationRegistry {
     function update(uint256 listId, address[] calldata _delegates) external {
         require(_delegates.length > 0, "Cannot set empty list");
         require(owners[listId] == msg.sender, "Only list owner can update");
-        
+
         delegates[listId] = _delegates;
-        
+
         emit DelegationListSet(msg.sender, listId, _delegates);
     }
-
-    /**
-     * @notice Point your tokens to someone else's delegation list
-     * @param listOwnerAddr The owner of the delegation list
-     * @param listId The list ID to point to
-     */
-    function pointToDelegationList(address listOwnerAddr, uint256 listId) external {
-        require(delegates[listId].length > 0, "List does not exist");
-        require(owners[listId] == listOwnerAddr, "Specified owner does not own this list");
-        
-        emit DelegationPointer(msg.sender, listOwnerAddr, listId);
-    }
-
-
 
     /**
      * @notice Gets the delegation list for a specific list ID
@@ -84,7 +70,6 @@ contract DelegationRegistry {
         return delegates[listId];
     }
 
-
     /**
      * @notice Gets the ranking of a specific delegate in a list
      * @param listId The list ID to query
@@ -93,7 +78,7 @@ contract DelegationRegistry {
      */
     function getDelegateRanking(uint256 listId, address delegate) external view returns (uint256 ranking) {
         address[] memory _delegates = delegates[listId];
-        
+
         for (uint256 i = 0; i < _delegates.length; i++) {
             if (_delegates[i] == delegate) {
                 return i; // Return 0-based index (0 = highest priority)

@@ -26,7 +26,7 @@ export default function Navigation({
 
   const navItems = [
     { href: "/", label: "Home" },
-    { href: "/eip", label: "EIP Draft" },
+    { href: "/eip", label: "EIP" },
     {
       href: "https://github.com/its-everdred/rancho-del-vote",
       label: "GitHub",
