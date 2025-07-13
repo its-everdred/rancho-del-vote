@@ -10,7 +10,9 @@ import {
 
 export default function EIPPage() {
   const [isDark, setIsDark] = useState(true);
-  const [activeTab, setActiveTab] = useState<"eip" | "contract">("eip");
+  const [activeTab, setActiveTab] = useState<
+    "eip" | "delegation" | "erc20votes" | "votes" | "governor"
+  >("eip");
   const [contractCode, setContractCode] = useState<string>("");
 
   const toggleTheme = () => setIsDark(!isDark);
@@ -27,7 +29,7 @@ export default function EIPPage() {
       }
     };
 
-    if (activeTab === "contract") {
+    if (activeTab === "delegation") {
       fetchContractCode();
     }
   }, [activeTab]);
@@ -67,9 +69,9 @@ export default function EIPPage() {
                 EIP
               </button>
               <button
-                onClick={() => setActiveTab("contract")}
+                onClick={() => setActiveTab("delegation")}
                 className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors duration-300 ${
-                  activeTab === "contract"
+                  activeTab === "delegation"
                     ? isDark
                       ? "border-red-400 text-red-400"
                       : "border-red-600 text-red-600"
@@ -79,6 +81,48 @@ export default function EIPPage() {
                 }`}
               >
                 DelegationRegistry.sol
+              </button>
+              <button
+                onClick={() => setActiveTab("erc20votes")}
+                className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors duration-300 ${
+                  activeTab === "erc20votes"
+                    ? isDark
+                      ? "border-red-400 text-red-400"
+                      : "border-red-600 text-red-600"
+                    : isDark
+                    ? "border-transparent text-neutral-400 hover:text-white hover:border-neutral-300"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
+              >
+                ERC20Votes.sol
+              </button>
+              <button
+                onClick={() => setActiveTab("votes")}
+                className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors duration-300 ${
+                  activeTab === "votes"
+                    ? isDark
+                      ? "border-red-400 text-red-400"
+                      : "border-red-600 text-red-600"
+                    : isDark
+                    ? "border-transparent text-neutral-400 hover:text-white hover:border-neutral-300"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
+              >
+                Votes.sol
+              </button>
+              <button
+                onClick={() => setActiveTab("governor")}
+                className={`py-2 px-1 border-b-2 font-medium text-sm transition-colors duration-300 ${
+                  activeTab === "governor"
+                    ? isDark
+                      ? "border-red-400 text-red-400"
+                      : "border-red-600 text-red-600"
+                    : isDark
+                    ? "border-transparent text-neutral-400 hover:text-white hover:border-neutral-300"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
+              >
+                Governor.sol
               </button>
             </nav>
           </div>
@@ -508,7 +552,7 @@ export default function EIPPage() {
                 <p className="mb-4 leading-relaxed">
                   See the{" "}
                   <button
-                    onClick={() => setActiveTab("contract")}
+                    onClick={() => setActiveTab("delegation")}
                     className="text-red-500 hover:text-red-600 font-medium underline"
                   >
                     DelegationRegistry.sol
@@ -596,7 +640,7 @@ export default function EIPPage() {
               </div>
             </div>
           </div>
-        ) : (
+        ) : activeTab === "delegation" ? (
           <div
             className={`rounded-xl border transition-colors duration-300 ${
               isDark
@@ -611,13 +655,12 @@ export default function EIPPage() {
                   className={`px-3 py-1 rounded-full text-sm font-medium ${
                     isDark
                       ? "bg-green-900/30 text-green-400 border border-green-600/30"
-                      : "bg-green-100 text-green-800 border border-green-300"
+                      : "bg-green-100 text-green-800 border-green-300"
                   }`}
                 >
                   Reference Implementation
                 </span>
               </div>
-
               <div className="rounded-lg overflow-hidden">
                 <SyntaxHighlighter
                   language="solidity"
@@ -636,6 +679,74 @@ export default function EIPPage() {
                 >
                   {contractCode || "// Loading contract source..."}
                 </SyntaxHighlighter>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div
+            className={`rounded-xl border transition-colors duration-300 ${
+              isDark
+                ? "bg-neutral-800/50 border-neutral-700"
+                : "bg-gray-50 border-gray-200"
+            }`}
+          >
+            <div className="p-8">
+              <div className="flex items-center justify-between mb-6">
+                <h1 className="text-2xl font-bold">
+                  {activeTab === "erc20votes" && "ERC20Votes.sol"}
+                  {activeTab === "votes" && "Votes.sol"}
+                  {activeTab === "governor" && "Governor.sol"}
+                </h1>
+                <span
+                  className={`px-3 py-1 rounded-full text-sm font-medium ${
+                    isDark
+                      ? "bg-green-900/30 text-green-400 border border-green-600/30"
+                      : "bg-green-100 text-green-800 border-green-300"
+                  }`}
+                >
+                  Reference Implementation
+                </span>
+              </div>
+              <div className="relative rounded-lg overflow-hidden min-h-[300px]">
+                <div className="absolute left-0 right-0 top-0 flex justify-center z-20 pointer-events-none select-none pt-8">
+                  <span
+                    style={{
+                      fontSize: "2.5rem",
+                      fontWeight: 800,
+                      color: isDark ? "#fff" : "#222",
+                      textShadow: "0 2px 16px rgba(0,0,0,0.3)",
+                      letterSpacing: "2px",
+                      opacity: 0.85,
+                    }}
+                  >
+                    Coming Soon
+                  </span>
+                </div>
+                <div
+                  style={{
+                    filter: "blur(8px)",
+                    pointerEvents: "none",
+                    userSelect: "none",
+                  }}
+                >
+                  <SyntaxHighlighter
+                    language="solidity"
+                    style={isDark ? vscDarkPlus : vs}
+                    showLineNumbers={true}
+                    customStyle={{
+                      margin: 0,
+                      fontSize: "14px",
+                      lineHeight: "1.5",
+                    }}
+                    lineNumberStyle={{
+                      minWidth: "3em",
+                      paddingRight: "1em",
+                      color: isDark ? "#6b7280" : "#9ca3af",
+                    }}
+                  >
+                    {contractCode || "// Loading contract source..."}
+                  </SyntaxHighlighter>
+                </div>
               </div>
             </div>
           </div>
